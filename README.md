@@ -4,6 +4,8 @@ This is the CUDA/C++ source code for the HPG 2024 submission "Frustum Volume Cac
 
 This project contains the real-time viewer and offline-renderer implementation of our proposed caching and reprojection approach.
 
+![Teaser image](docs/teaser.png)
+
 # Dependencies and Pre-Requisites
 
 The source code was tested on an Ubuntu 22.04 system with CUDA 12.2, and requires an NVIDIA GPU (RTX 4090 and RTX 3080Ti) with Tensor-Cores and CUDA > 12.

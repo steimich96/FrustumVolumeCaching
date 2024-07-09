@@ -1,0 +1,51 @@
+[submodule "dependencies/glfw"]
+	path = dependencies/glfw
+	url = https://github.com/glfw/glfw.git
+	branch = latest
+[submodule "dependencies/tiny-cuda-nn"]
+	path = dependencies/tiny-cuda-nn
+	url = https://github.com/NVlabs/tiny-cuda-nn
+[submodule "dependencies/zstr"]
+	path = dependencies/zstr
+	url = https://github.com/Tom94/zstr
+[submodule "dependencies/imgui"]
+	path = dependencies/imgui
+	url = https://github.com/ocornut/imgui.git
+	branch = docking
+[submodule "dependencies/glm"]
+	path = dependencies/glm
+	url = https://github.com/g-truc/glm
+[submodule "dependencies/ImGuiFileDialog"]
+	path = dependencies/ImGuiFileDialog
+	url = https://github.com/aiekick/ImGuiFileDialog.git
+[submodule "dependencies/owl"]
+	path = dependencies/owl
+	url = https://github.com/owl-project/owl.git
+[submodule "submodule.dependencies/glfw.path"]
+	path = dependencies/glfw
+	url = https://github.com/glfw/glfw.git
+	branch = latest
+[submodule "submodule.dependencies/tiny-cuda-nn.path"]
+	path = dependencies/tiny-cuda-nn
+	url = https://github.com/NVlabs/tiny-cuda-nn
+	branch = master
+[submodule "submodule.dependencies/zstr.path"]
+	path = dependencies/zstr
+	url = https://github.com/Tom94/zstr
+	branch = master
+[submodule "submodule.dependencies/imgui.path"]
+	path = dependencies/imgui
+	url = https://github.com/ocornut/imgui.git
+	branch = docking
+[submodule "submodule.dependencies/glm.path"]
+	path = dependencies/glm
+	url = https://github.com/g-truc/glm
+	branch = master
+[submodule "submodule.dependencies/ImGuiFileDialog.path"]
+	path = dependencies/ImGuiFileDialog
+	url = https://github.com/aiekick/ImGuiFileDialog.git
+	branch = master
+[submodule "submodule.dependencies/owl.path"]
+	path = dependencies/owl
+	url = https://github.com/owl-project/owl.git
+	branch = master

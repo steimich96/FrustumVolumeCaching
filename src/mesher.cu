@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2024, Michael Steiner, Graz University of Technology.
+ * This code is licensed under the MIT license.
+ */
 
 // Code partially adapted from https://github.com/owl-project/owlDVR_SpaceSkip/blob/master/SpaceSkipper.cu
 

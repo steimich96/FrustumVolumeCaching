@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2024, Michael Steiner, Graz University of Technology.
+ * This code is licensed under the MIT license.
+ */
+
 #include "programs/init_ray_payloads.h"
 
 #include <optix_device.h>

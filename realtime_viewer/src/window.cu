@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2024, Michael Steiner, Graz University of Technology.
+ * This code is licensed under the MIT license.
+ */
+
 #include "window.h"
 #include "core.h"
 #include "events/window_events.h"

@@ -1,7 +1,10 @@
+/*
+ * Copyright (C) 2024, Michael Steiner, Graz University of Technology.
+ * This code is licensed under the MIT license.
+ */
 
 #include "util/debug_buffer.h"
 
-#include "util/bmpwriter.h"
 #include "util/cub_helper.h"
 #include "util/cuda_helper.h"
 #include "util/helper_math.h"

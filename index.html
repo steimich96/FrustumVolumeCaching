@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html class="fontawesome-i2svg-active fontawesome-i2svg-complete">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Frustum Volume Caching for Accelerated NeRF Rendering">
+    <meta name="keywords" content="NeRF, Editing, Stylization, Recoloring">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Frustum Volume Caching for Accelerated NeRF Rendering</title>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QZ6C9BY559"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-QZ6C9BY559');
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+    <link rel="stylesheet" href="./static/css/bulma.min.css">
+    <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="./static/css/index.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="static/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="static/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="static/favicon/favicon-16x16.png">
+    <link rel="manifest" href="static/favicon/site.webmanifest">
+
+    <link rel="stylesheet" href="test/dics.css">
+    <script src="test/dics.js"></script>
+    <script src="test/video_comparison.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="./static/js/fontawesome.all.min.js"></script>
+    <script src="./static/js/bulma-carousel.min.js"></script>
+    <script src="./static/js/bulma-slider.min.js"></script>
+    <script src="./static/js/index.js"></script>
+</head>
+
+<body>
+
+
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+
+                    <div class="column has-text-centered">
+                        <h1 class="title is-1 publication-title" style="margin: 3px; padding: 2px;">
+                            <span style="font-weight: lighter; margin: 0px;">Frustum Volume Caching for
+                                <br />Accelerated NeRF Rendering</span>
+                        </h1>
+                        <h2 class="title is-3 publication-title"
+                            style="font-weight: 100; margin: 9px; padding: 2px; color: darkslategray;">
+                            HPG 2024 &emsp; PACMCGIT
+                        </h2>
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block"><a href="https://steimich96.github.io/"><strong>Michael
+                                        Steiner</strong></a><sup> 1</sup></span> &emsp;
+                            <span class="author-block"><a
+                                    href="https://online.tugraz.at/tug_online/visitenkarte.show_vcard?pPersonenGruppe=3&pPersonenId=ABF48312D534DD6E">Thomas
+                                    Köhler</a><sup> 1</sup></span> &emsp;
+                            <span class="author-block"><a href="https://r4dl.github.io">Lukas Radl</a><sup>
+                                    1</sup></span> &emsp;
+                            <span class="author-block"><a href="https://www.markussteinberger.net/">Markus
+                                    Steinberger</a> <sup>1,2</sup></span>
+                        </div>
+
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block"><sup>1</sup> Graz University of Technology</span> &emsp;
+                            <span class="author-block"><sup>2</sup> Huawei Technologies</span> &emsp;
+                        </div>
+
+                        <div class="column has-text-centered">
+                            <div class="publication-links">
+                                <span class="link-block">
+                                    <a href="assets/paper/FrustumVolumeCaching.pdf"
+                                        class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <svg class="svg-inline--fa fa-file-pdf fa-w-12" aria-hidden="true"
+                                                focusable="false" data-prefix="fas" data-icon="file-pdf" role="img"
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"
+                                                data-fa-i2svg="">
+                                                <path fill="currentColor"
+                                                    d="M181.9 256.1c-5-16-4.9-46.9-2-46.9 8.4 0 7.6 36.9 2 46.9zm-1.7 47.2c-7.7 20.2-17.3 43.3-28.4 62.7 18.3-7 39-17.2 62.9-21.9-12.7-9.6-24.9-23.4-34.5-40.8zM86.1 428.1c0 .8 13.2-5.4 34.9-40.2-6.7 6.3-29.1 24.5-34.9 40.2zM248 160h136v328c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V24C0 10.7 10.7 0 24 0h200v136c0 13.2 10.8 24 24 24zm-8 171.8c-20-12.2-33.3-29-42.7-53.8 4.5-18.5 11.6-46.6 6.2-64.2-4.7-29.4-42.4-26.5-47.8-6.8-5 18.3-.4 44.1 8.1 77-11.6 27.6-28.7 64.6-40.8 85.8-.1 0-.1.1-.2.1-27.1 13.9-73.6 44.5-54.5 68 5.6 6.9 16 10 21.5 10 17.9 0 35.7-18 61.1-61.8 25.8-8.5 54.1-19.1 79-23.2 21.7 11.8 47.1 19.5 64 19.5 29.2 0 31.2-32 19.7-43.4-13.9-13.6-54.3-9.7-73.6-7.2zM377 105L279 7c-4.5-4.5-10.6-7-17-7h-6v128h128v-6.1c0-6.3-2.5-12.4-7-16.9zm-74.1 255.3c4.1-2.7-2.5-11.9-42.8-9 37.1 15.8 42.8 9 42.8 9z">
+                                                </path>
+                                            </svg>
+                                        </span>
+                                        <span>Paper</span>
+                                    </a>
+                                </span>
+                                <!-- Video Link. -->
+                                <span class="link-block">
+                                    <a href="https://youtube.com/embed/zCjIYewmeaQ"
+                                        class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="fab fa-youtube"></i>
+                                        </span>
+                                        <span>Video</span>
+                                    </a>
+
+                                    <!-- Code Link. -->
+                                    <span class="link-block">
+                                        <a href="https://github.com/steimich96/FrustumVolumeCaching"
+                                            class="external-link button is-normal is-rounded is-dark">
+                                            <span class="icon">
+                                                <i class="fab fa-github"></i>
+                                            </span>
+                                            <span>Code</span>
+                                        </a>
+                                    </span>
+
+                                    <span class="link-block">
+                                        <a href="https://cloud.tugraz.at/index.php/s/yL4TG3dyXGoNb6N"
+                                            class="external-link button is-normal is-rounded is-dark">
+                                            <span class="icon">
+                                                <svg class="svg-inline--fa fa-images fa-w-18" aria-hidden="true"
+                                                    focusable="false" data-prefix="far" data-icon="images" role="img"
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
+                                                    data-fa-i2svg="">
+                                                    <path fill="currentColor"
+                                                        d="M480 416v16c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V176c0-26.51 21.49-48 48-48h16v48H54a6 6 0 0 0-6 6v244a6 6 0 0 0 6 6h372a6 6 0 0 0 6-6v-10h48zm42-336H150a6 6 0 0 0-6 6v244a6 6 0 0 0 6 6h372a6 6 0 0 0 6-6V86a6 6 0 0 0-6-6zm6-48c26.51 0 48 21.49 48 48v256c0 26.51-21.49 48-48 48H144c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h384zM264 144c0 22.091-17.909 40-40 40s-40-17.909-40-40 17.909-40 40-40 40 17.909 40 40zm-72 96l39.515-39.515c4.686-4.686 12.284-4.686 16.971 0L288 240l103.515-103.515c4.686-4.686 12.284-4.686 16.971 0L480 208v80H192v-48z">
+                                                    </path>
+                                                </svg>
+                                            </span>
+                                            <span>Pre-Trained Models</span>
+                                        </a>
+                                    </span>
+
+                                    <span class="link-block">
+                                        <a href="https://cloud.tugraz.at/index.php/s/AD9nGg6e37c9dgm"
+                                            class="external-link button is-normal is-rounded is-dark">
+                                            <span class="icon">
+                                                <svg class="svg-inline--fa fa-images fa-w-18" aria-hidden="true"
+                                                    focusable="false" data-prefix="far" data-icon="images" role="img"
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
+                                                    data-fa-i2svg="">
+                                                    <path fill="currentColor"
+                                                        d="M480 416v16c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V176c0-26.51 21.49-48 48-48h16v48H54a6 6 0 0 0-6 6v244a6 6 0 0 0 6 6h372a6 6 0 0 0 6-6v-10h48zm42-336H150a6 6 0 0 0-6 6v244a6 6 0 0 0 6 6h372a6 6 0 0 0 6-6V86a6 6 0 0 0-6-6zm6-48c26.51 0 48 21.49 48 48v256c0 26.51-21.49 48-48 48H144c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h384zM264 144c0 22.091-17.909 40-40 40s-40-17.909-40-40 17.909-40 40-40 40 17.909 40 40zm-72 96l39.515-39.515c4.686-4.686 12.284-4.686 16.971 0L288 240l103.515-103.515c4.686-4.686 12.284-4.686 16.971 0L480 208v80H192v-48z">
+                                                    </path>
+                                                </svg>
+                                            </span>
+                                            <span>Supplementary Material</span>
+                                        </a>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="hero teaser">
+        <div class="container is-max-desktop">
+            <div class="hero-body">
+                <img src="assets/images/teaser.svg">
+                <h2 class="subtitle has-text-centered">
+                    <br />
+                    We accelerate NeRF rendering by caching expensively computed view-independent latent codes in a
+                    frustum volume,
+                    allowing for efficient re-evaluation of view-dependent effects from new viewpoints. <br />
+                    Our approach accelerates real-time rendering, as well as offline rendering with expensive effects.
+                </h2>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="section">
+        <div class="container is-max-desktop">
+            <!--/ Video. -->
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <h2 class="title is-3">Video</h2>
+                    <div class="publication-video">
+                        <iframe src="https://youtu.be/zCjIYewmeaQ?rel=0&amp;showinfo=0" frameborder="0"
+                            allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+            <!-- Abstract. -->
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <h2 class="title is-3">Abstract</h2>
+                    <div class="content has-text-justified">
+                        <p>
+                            Neural Radiance Fields (NeRFs) have revolutionized the field of
+                            inverse rendering due to their ability to synthesize high-quality
+                            novel views and applicability in practical contexts.
+                            NeRFs leverage volume rendering, evaluating view-dependent color at each sample with an
+                            expensive network,
+                            where a high computational burden is placed on extracting an informative, view-independent
+                            latent code.
+                        </p>
+                        <p>
+                            We propose a temporal coherence method to accelerate NeRF rendering by caching the latent
+                            codes
+                            of all samples in an initial viewpoint and reusing them in consecutive frames.
+                            By utilizing a sparse frustum volume grid for caching and performing lookups via backward
+                            reprojection,
+                            we enable temporal reuse of NeRF samples while maintaining the ability to re-evaluate
+                            view-dependent effects efficiently.
+                            To facilitate high-fidelity rendering from our cache with interactive framerates,
+                            we propose a novel cone encoding and explore a training scheme to induce local linearity
+                            into the latent information.
+                        </p>
+                        <p>
+                            Extensive experimental evaluation demonstrates that these choices enable high-quality
+                            real-time rendering from our cache,
+                            even when reducing latent code size significantly.
+                            Our proposed method scales exceptionally well for large networks, and our highly optimized
+                            real-time implementation allows for cache initialization at runtime.
+                            For offline rendering of high-quality video sequences with expensive supersampled effects
+                            like motion blur or depth of field,
+                            our approach provides speed-ups of up to 2×.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container is-max-desktop">
+
+            <!-- More Results. -->
+            <div class="columns is-centered">
+                <div class="column is-full-width">
+
+                    <h2 class="title is-3">Volumetric NeRF Caching</h2>
+                    <div class="content has-text-justified">
+                        <p>
+                            We are able to perform fast lookups into our frustum-aligned volumetric cache via backward
+                            projection.
+                            By utilizing an occupancy grid, we can detect cache-misses and seamlessly combine cached
+                            samples with newly evaluated ones along view rays.
+                            For cache-hits, only the significantly smaller head network needs to be executed to evaluate
+                            view-dependent effects.
+                            For small viewpoint changes, cache renderings are almost indistinguishable from the
+                            baseline.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column has-text-centered">
+                <button class="button-17-selected" role="button" id="btn_bicycle_flip"
+                    onclick="changeSceneFLIP(this.innerText)">bicycle
+                </button>
+                <button class="button-17" role="button" id="btn_stump_flip"
+                    onclick="changeSceneFLIP(this.innerText)">stump
+                </button>
+                <button class="button-17" role="button" id="btn_kitchen_flip"
+                    onclick="changeSceneFLIP(this.innerText)">kitchen
+                </button>
+                <button class="button-17" role="button" id="btn_room_flip"
+                    onclick="changeSceneFLIP(this.innerText)">room
+                </button>
+            </div>
+
+            <div class="columns is-centered">
+                <div class="column">
+                    <div class="content">
+                        <div class="columns is-centered">
+                            <div class="column is-full-width">
+                                <video class="video" id="flipvideo" loop="" playsinline="" autoplay="" muted=""
+                                    src="assets/videos_rotation/bicycle/full.mp4" onplay="resizeAndPlay(this)"
+                                    style="height: 0px;"></video>
+                                <canvas class="videoMerge" id="flipvideoMerge" width="100%"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column has-text-centered">
+                <button class="button-17-selected" role="button" id="btn_flip0" onclick="changeFLIP(0)">Full Cache vs.
+                    Baseline
+                </button>
+                <button class="button-17" role="button" id="btn_flip7" onclick="changeFLIP(7)">Full Cache vs. Only
+                    Cache-Hits<sub></sub>
+                </button>
+                <button class="button-17" role="button" id="btn_flip1" onclick="changeFLIP(1)">Cache + Cache-Hit
+                    Mask<sub></sub>
+                </button>
+            </div>
+        </div>
+        </div>
+    </section>
+
+
+
+    <section class="section" id="BibTeX">
+        <div class="container is-max-desktop content">
+            <h2 class="title">BibTeX</h2>
+            <pre><code id="citation_text">@article{steiner2024nerfcaching,
+    author    = {Steiner, Michael and Köhler, Thomas and Radl, Lukas and Steinberger, Markus},
+    title     = {{Frustum Volume Caching for Accelerated NeRF Rendering}},
+    journal   = {Proc. ACM Comput. Graph. Interact. Tech.},
+    number    = {3},
+    volume    = {7},
+    articleno = {-},
+    year      = {2024},
+}</code></pre>
+            <clipboard-copy aria-label="Copy"
+                class="clipcopy ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center"
+                data-copy-feedback="Copied!" data-tooltip-direction="w" value="" tabindex="0" role="button"
+                onclick="copytoclip()" id="clip-copy" style="position: absolute; top: 110px; right: 10px;">
+                <svg id='svg_cp' aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16"
+                    data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+                    <path id='clipboard1'
+                        d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z">
+                    </path>
+                    <path id='clipboard2'
+                        d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z">
+                    </path>
+                    <path id='checkbox1' class="is-hidden"
+                        d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z">
+                    </path>
+                </svg>
+            </clipboard-copy>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    <div class="content has-text-centered">
+                        <p>
+                            We thank <a href="https://nerfies.github.io/">Nerfies</a> for providing the
+                            <a href="https://github.com/nerfies/nerfies.github.io">source code</a> to their webpage. <br>
+                            The Video slider is adapted from <a
+                                href="https://r4dl.github.io/StopThePop/">StopThePop</a>,
+                            <a href="https://dorverbin.github.io/refnerf/">Ref-NeRF</a>, and <a
+                                href="https://reconfusion.github.io/">Reconfusion</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

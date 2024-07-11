@@ -1,0 +1,6 @@
+This favicon was generated using the following font:
+
+- Font Title: Monomaniac One
+- Font Author: Copyright 2020 The Monomaniac Project Authors (https://github.com/ManiackersDesign/monomaniac), all rights reserved.
+- Font Source: https://fonts.gstatic.com/s/monomaniacone/v11/4iC06K17YctZjx50EU-QlwPmcqRnqYkB5kwI.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))

@@ -1,10 +1,22 @@
 # Frustum Volume Caching for Accelerated NeRF Rendering
 
+Authors: [Michael Steiner](https://steimich96.github.io),
+[Thomas Köhler](https://online.tugraz.at/tug_online/visitenkarte.show_vcard?pPersonenGruppe=3&pPersonenId=ABF48312D534DD6E),
+[Lukas Radl](https://r4dl.github.io/),
+[Markus Steinberger](https://www.markussteinberger.net/)
+<br>
+
 This is the CUDA/C++ source code for the HPG 2024 submission "Frustum Volume Caching for Accelerated NeRF Rendering".
 
 This project contains the real-time viewer and offline-renderer implementation of our proposed caching and reprojection approach.
 
 ![Teaser image](docs/teaser.png)
+
+[Webpage](https://steimich96.github.io/FrustumVolumeCaching) 
+| [Training Framework (Github)](https://github.com/steimich96/FrustumVolumeCaching-training) 
+| [Video](https://www.youtube.com/watch?v=zCjIYewmeaQ)
+| [Pre-trained Models](https://cloud.tugraz.at/index.php/s/yL4TG3dyXGoNb6N)
+<br>
 
 # Dependencies and Pre-Requisites
 
